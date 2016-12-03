@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -68,7 +70,7 @@ class AdminUsersController extends Controller
 //
 //        User::create($request->all());
 //
-//        return redirect('/admin/
+        return redirect('/admin/users');
 
     //  return $request->all();
 
@@ -94,6 +96,12 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
+
+        $user=User::findOrFail($id);
+
+        $roles =Role::lists('name' , 'id' )->all();
+
+        return view('admin/users/edit' , compact('user' , 'roles'));
     }
 
     /**
@@ -103,9 +111,41 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersEditRequest $request, $id)
     {
         //
+        if(trim($request->password)==''){
+
+            $input=$request->except('password');
+        }
+
+        else{
+
+            $input=$request->all();
+
+            $input['password']=bcrypt($request->password);
+
+
+        }
+
+        $user=User::findOrFail($id);
+
+        if ($file= $request->file('photo_id')){
+
+            $name= time().$file->getClientOriginalName();
+
+            $file->move('images', $name);
+            $photo=Photo::create(['file'=>$name]);
+
+            $input['photo_id'] = $photo->id;
+
+        }
+
+
+
+        $user->update($input);
+
+        return redirect('/admin/users');
     }
 
     /**
@@ -117,5 +157,16 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        $user= User::findOrFail($id);
+
+        unlink(public_path().$user->photo->file);
+
+        $user->delete();
+
+
+        Session::flash('deleted_user',' the user has been deleted ');
+
+       return  redirect('/admin/users');
+
     }
 }
