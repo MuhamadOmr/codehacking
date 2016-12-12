@@ -11,7 +11,7 @@
     <div class="col-sm-6">
 
 
-        {!! Form::model($category , ['method'=>'PATCH', 'action'=> ['AdminCategoriesController@store' , $category_id],'files'=>true]) !!}
+        {!! Form::model($category , ['method'=>'PATCH', 'action'=> ['AdminCategoriesController@update' , $category->id],'files'=>true]) !!}
 
 
         <div class="form-group">
@@ -20,7 +20,23 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Create Category', ['class'=>'btn btn-primary']) !!}
+            <div class="form-group col-sm-6" >
+            {!! Form::submit('Update Category', ['class'=>'btn btn-primary']) !!}
+        </div>
+        </div>
+
+        {!! Form::close() !!}
+
+        {!! Form::open( ['method'=>'DELETE', 'action'=> ['AdminCategoriesController@destroy' , $category->id],'files'=>true]) !!}
+
+
+
+        <div class="form-group">
+
+            <div class="form-group col-sm-6" >
+            {!! Form::submit('Delete Category', ['class'=>'btn btn-danger']) !!}
+        </div>
+
         </div>
 
         {!! Form::close() !!}
@@ -34,6 +50,11 @@
     </div>
 
     <div class="col-sm-6">
+
+
+
+
+
 
 
 
