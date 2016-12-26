@@ -11,6 +11,12 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.comment-reply {
+
+    display: none;
+
+}
 /*!
  * Bootstrap v3.3.4 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
