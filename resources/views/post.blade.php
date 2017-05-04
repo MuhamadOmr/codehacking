@@ -82,14 +82,37 @@
             </h4>
             <p>{{$comment->body}}</p>
 
-            <div class="comment-reply-container">
-
             <button class="toggle-reply btn btn-primary pull-right">reply</button>
 
 
 
+            @if(count($comment->replies)> 0)
 
-                <div class="comment-reply">
+            @foreach($comment->replies as $reply)
+
+                    <!-- Nested Comment -->
+
+            <div class="media">
+
+                <a class="pull-left" href="#">
+                    <img height="30" class="media-object" src="{{$reply->photo}}" alt="">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">{{$reply->author}}
+                        <small>{{$reply->created_at->diffForHumans()}}</small>
+                    </h4>
+                    <p>{{$reply->body}}</p>
+                </div>
+
+            </div>
+            <!-- End Nested Comment -->
+            @endforeach
+            @endif
+
+
+            <div class="comment-reply" style="display: none">
+
+
 
                     {!! Form::open(['method'=>'POST', 'action'=> 'CommentRepliesController@createReply','files'=>true]) !!}
 
@@ -106,35 +129,13 @@
 
                     {!! Form::close() !!}
 
-                </div>
 
 
 
-            </div>
-
-
-            @if(count($comment->replies)> 0)
-
-                    @foreach($comment->replies as $reply)
-
-            <!-- Nested Comment -->
-
-            <div class="media">
-
-                <a class="pull-left" href="#">
-                    <img height="30" class="media-object" src="{{$reply->photo}}" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">{{$reply->author}}
-                        <small>{{$reply->created_at->diffForHumans()}}</small>
-                    </h4>
-                    <p>{{$reply->body}}</p>
-                </div>
 
             </div>
-            <!-- End Nested Comment -->
-                @endforeach
-            @endif
+
+
         </div>
     </div>
 
@@ -147,15 +148,14 @@
 @stop
 
 @section('scripts')
-    <script>
-
-        $(".comment-reply-container .toggle-reply").click(function(){
-
-            $(this).next().slideToggle("slow");
+    <script type ="text/javascript" >
 
 
+        $(document).ready(function(){
+            $(".toggle-reply").click(function(){
+                $(".comment-reply").slideToggle("slow");
+            });
         });
-
 
     </script>
 

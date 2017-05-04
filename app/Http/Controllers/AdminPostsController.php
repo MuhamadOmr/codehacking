@@ -68,7 +68,7 @@ class AdminPostsController extends Controller
 
         $user->posts()->create($input);
 
-        return redirect ('/admin/posts');
+        return redirect ('/admin/categories');
 
     }
 
@@ -158,10 +158,10 @@ class AdminPostsController extends Controller
         return redirect('/admin/posts');
     }
 
-    public function post($id)
+    public function post($slug)
     {
         //
-        $post = Post::findorFail($id);
+        $post = Post::findBySlugOrFail($slug);
 
         $comments = $post->comments()->whereIsActive(1)->get();
 

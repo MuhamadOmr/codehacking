@@ -34,7 +34,7 @@
              <td><img height="50" src="{{$post->photo ? $post->photo->file : "http://placehold.it/400x400"}}" alt=""></td>
              <td>{{str_limit($post->title,15)}}</td>
              <td>{{str_limit($post->body , 20)}}</td>
-              <td><a href="{{route('home.post' , $post->id)}}">view post</a></td>
+              <td><a href="{{route('home.post' , $post->slug)}}">view post</a></td>
               <td><a href="{{route('admin.comments.show' , $post->id)}}">view comments</a></td>
               <td>{{$post->created_at->diffForHumans()}}</td>
               <td>{{$post->updated_at->diffForHumans()}}</td>
